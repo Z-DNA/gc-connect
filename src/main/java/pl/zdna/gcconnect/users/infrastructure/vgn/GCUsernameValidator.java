@@ -3,12 +3,12 @@ package pl.zdna.gcconnect.users.infrastructure.vgn;
 import kong.unirest.core.Empty;
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.Unirest;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import pl.zdna.gcconnect.shared.interfaces.Validator;
 
-@Slf4j
+@Log4j2
 @Component("usernameValidator")
 public class GCUsernameValidator implements Validator<String> {
 
@@ -25,7 +25,6 @@ public class GCUsernameValidator implements Validator<String> {
     }
 
     private void validateUsername(final String username) {
-        final String url = usernameValidatorUrl.formatted(username);
         final var response = Unirest.get(usernameValidatorUrl.formatted(username)).asEmpty();
         validateResponse(response, username);
     }

@@ -29,6 +29,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.3.RELEASE")
 	implementation("com.okta.spring:okta-spring-boot-starter:3.0.7")
 	implementation("com.googlecode.libphonenumber:libphonenumber:8.13.52")
 	implementation("jakarta.mail:jakarta.mail-api:2.1.3")
