@@ -1,0 +1,17 @@
+<!-- src/main/resources/templates/index.html -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<body>
+<div sec:authorize="!isAuthenticated()">
+    <a th:href="@{/oauth2/authorization/okta}">Log In</a>
+</div>
+<div sec:authorize="isAuthenticated()">
+    <h2 th:text="'Hi ' + ${profile.get('name')} + '! You are logged in!'"></h2>
+    <h1>Invitation</h1>
+    <form action="#" th:action="@{/invite}" th:object="${username}" method="post">
+        <p>GC nick: <input type="text" th:field="*{name}" /></p>
+        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+    </form>
+    <a th:href="@{/logout}">Log Out</a>
+</div>
+</body>
+</html>

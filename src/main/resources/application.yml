@@ -2,3 +2,19 @@ gc-service:
   username-validator-url: ${GC_VALIDATOR_URL}
   listing-url: ${GC_LISTING_URL}
 
+okta:
+  oauth2:
+    issuer: https://gc-connect.eu.auth0.com/
+    client-id: ${AUTH0_CLIENT_ID}
+    client-secret: ${AUTH0_CLIENT_SECRET}
+
+com.auth0:
+  api-url: https://gc-connect.eu.auth0.com/api/v2/
+  profile-url: https://gc-connect.eu.auth0.com/userinfo
+  domain: gc-connect.eu.auth0.com
+  clientId: ${AUTH0_CLIENT_ID}
+  clientSecret: ${AUTH0_CLIENT_SECRET}
+
+spring.security.oauth2:
+  resourceserver:
+    jwt.issuer-uri: https://gc-connect.eu.auth0.com/

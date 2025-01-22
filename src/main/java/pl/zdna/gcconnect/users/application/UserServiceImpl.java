@@ -2,6 +2,7 @@ package pl.zdna.gcconnect.users.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.zdna.gcconnect.authorization.LoggedInUserService;
 import pl.zdna.gcconnect.shared.Response;
 import pl.zdna.gcconnect.shared.events.FutureCorrelation;
 import pl.zdna.gcconnect.shared.interfaces.FutureCorrelationAware;

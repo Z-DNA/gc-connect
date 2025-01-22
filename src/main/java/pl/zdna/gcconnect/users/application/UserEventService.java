@@ -3,6 +3,7 @@ package pl.zdna.gcconnect.users.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import pl.zdna.gcconnect.authorization.UserAuthorizationService;
 import pl.zdna.gcconnect.shared.Response;
 import pl.zdna.gcconnect.shared.events.CorrelationalDomainEvent;
 import pl.zdna.gcconnect.shared.interfaces.FutureCorrelationAware;
@@ -22,7 +23,7 @@ public class UserEventService {
     private final CorrelationEventPublisher eventPublisher;
 
     private final FutureCorrelationAware userService;
-    private final UserAuthenticationService userAuthService;
+    private final UserAuthorizationService userAuthService;
 
     private final TemporaryUserRepository temporaryUserRepository;
 
@@ -39,7 +40,7 @@ public class UserEventService {
     @EventListener
     public void onTemporaryUserCreated(final TemporaryUserCreated event) {
         final String username = event.getUsername();
-        final Response response = userAuthService.createAuthenticatedUser(
+        final Response response = userAuthService.createAuthorizedUser(
                 username, event.getInviterUsername());
 
         final var eventToPublish = getEventForAuthenticatedUserCreation(response, username);
