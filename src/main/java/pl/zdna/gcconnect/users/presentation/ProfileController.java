@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.zdna.gcconnect.shared.Response;
-import pl.zdna.gcconnect.shared.validators.VGNFactory;
+import pl.zdna.gcconnect.vgn.VGNFactory;
 import pl.zdna.gcconnect.users.application.UserService;
 import pl.zdna.gcconnect.users.application.results.TemporaryUserCreatedResult;
 

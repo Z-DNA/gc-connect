@@ -1,11 +1,8 @@
-package pl.zdna.gcconnect.shared.validators;
+package pl.zdna.gcconnect.vgn;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import pl.zdna.gcconnect.shared.interfaces.Generator;
-import pl.zdna.gcconnect.shared.interfaces.Normalizer;
-import pl.zdna.gcconnect.shared.interfaces.Validator;
 
 @Component
 @RequiredArgsConstructor

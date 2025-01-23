@@ -7,8 +7,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import pl.zdna.gcconnect.shared.Entity;
-import pl.zdna.gcconnect.shared.validators.VGNFactory;
-import pl.zdna.gcconnect.shared.validators.VGNType;
+import pl.zdna.gcconnect.vgn.VGNFactory;
+import pl.zdna.gcconnect.vgn.VGNType;
 import pl.zdna.gcconnect.users.domain.events.PhoneNumberChanged;
 import pl.zdna.gcconnect.users.domain.events.UserActivated;
 

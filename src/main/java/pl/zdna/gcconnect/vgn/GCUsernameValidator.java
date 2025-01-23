@@ -1,4 +1,4 @@
-package pl.zdna.gcconnect.users.infrastructure.vgn;
+package pl.zdna.gcconnect.vgn;
 
 import kong.unirest.core.Empty;
 import kong.unirest.core.HttpResponse;
@@ -6,7 +6,6 @@ import kong.unirest.core.Unirest;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import pl.zdna.gcconnect.shared.interfaces.Validator;
 
 @Log4j2
 @Component("usernameValidator")

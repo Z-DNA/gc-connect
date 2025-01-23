@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import pl.zdna.gcconnect.shared.Response;
-import pl.zdna.gcconnect.shared.validators.VGNFactory;
-import pl.zdna.gcconnect.shared.validators.VGNType;
+import pl.zdna.gcconnect.vgn.VGNFactory;
+import pl.zdna.gcconnect.vgn.VGNType;
 import pl.zdna.gcconnect.users.application.results.AuthenticatedUserCreatedResult;
 
 @Log4j2

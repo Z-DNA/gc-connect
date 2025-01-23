@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-import pl.zdna.gcconnect.shared.validators.VGNFactory;
-import pl.zdna.gcconnect.shared.validators.VGNType;
+import pl.zdna.gcconnect.vgn.VGNFactory;
+import pl.zdna.gcconnect.vgn.VGNType;
 
 @Log4j2
 @Component

@@ -1,7 +1,6 @@
-package pl.zdna.gcconnect.users.infrastructure.vgn;
+package pl.zdna.gcconnect.vgn;
 
 import org.springframework.stereotype.Component;
-import pl.zdna.gcconnect.shared.interfaces.Generator;
 
 import java.util.UUID;
 

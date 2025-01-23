@@ -1,4 +1,4 @@
-package pl.zdna.gcconnect.shared.validators;
+package pl.zdna.gcconnect.vgn;
 
 public interface VGNFactory {
     <T> void validate(final VGNType type, final T object);

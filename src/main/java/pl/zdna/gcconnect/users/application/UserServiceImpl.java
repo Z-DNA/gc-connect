@@ -6,7 +6,7 @@ import pl.zdna.gcconnect.shared.Response;
 import pl.zdna.gcconnect.shared.events.FutureCorrelation;
 import pl.zdna.gcconnect.shared.interfaces.FutureCorrelationAware;
 import pl.zdna.gcconnect.shared.interfaces.CorrelationEventPublisher;
-import pl.zdna.gcconnect.shared.validators.VGNFactory;
+import pl.zdna.gcconnect.vgn.VGNFactory;
 import pl.zdna.gcconnect.users.domain.Privacy;
 import pl.zdna.gcconnect.users.domain.ReactivationPolicy;
 import pl.zdna.gcconnect.users.domain.TemporaryUser;
@@ -22,7 +22,6 @@ public class UserServiceImpl implements UserService, FutureCorrelationAware {
     private final LoggedInUserService loggedInUserService;
     private final VGNFactory VGNFactory;
     private final CorrelationEventPublisher eventPublisher;
-
 
     private final UserRepository userRepository;
     private final TemporaryUserRepository temporaryUserRepository;
