@@ -1,4 +1,4 @@
-package pl.zdna.gcconnect.authorization;
+package pl.zdna.gcconnect.users.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -14,9 +14,7 @@ public class LoggedInUserServiceImpl implements LoggedInUserService {
     @Override
     public OidcUser getLoggedInPrincipal() {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getPrincipal() instanceof OidcUser user){
-            return user;
-        }
+        if (auth != null && auth.getPrincipal() instanceof OidcUser user) return user;
         throw new IllegalStateException("User not logged in");
     }
 

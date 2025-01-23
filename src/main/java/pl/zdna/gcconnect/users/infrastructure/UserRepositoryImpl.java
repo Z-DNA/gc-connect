@@ -9,12 +9,12 @@ import pl.zdna.gcconnect.users.domain.UserRepository;
 public class UserRepositoryImpl implements UserRepository {
     @Override
     public void save(final User user) {
-        throw new NotImplementedException();
+        //TODO GCC-35
     }
 
     @Override
-    @Deprecated
     public User getByUsername(final String username) {
+        //TODO GCC-35
         return User.unvalidatedMinimal(username);
     }
 }

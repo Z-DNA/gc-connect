@@ -35,7 +35,7 @@ public class ProfileController {
         }
     }
 
-    @InitBinder
+    @InitBinder(value = "inviteUserForm")
     public void initBinder(WebDataBinder binder) {
         binder.addValidators(inviteUserFormValidator);
     }
@@ -63,7 +63,6 @@ public class ProfileController {
 
         final var futureResponse = userService.createTemporaryUser(inviteUserForm.getUsername(), inviteUserForm.getPhoneNumber());
         handleResponseForUserInvitation(model, futureResponse.join());
-
         return "invited";
     }
 

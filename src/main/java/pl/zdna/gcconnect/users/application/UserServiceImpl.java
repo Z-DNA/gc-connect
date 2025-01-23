@@ -2,13 +2,11 @@ package pl.zdna.gcconnect.users.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.zdna.gcconnect.authorization.LoggedInUserService;
 import pl.zdna.gcconnect.shared.Response;
 import pl.zdna.gcconnect.shared.events.FutureCorrelation;
 import pl.zdna.gcconnect.shared.interfaces.FutureCorrelationAware;
 import pl.zdna.gcconnect.shared.interfaces.CorrelationEventPublisher;
 import pl.zdna.gcconnect.shared.validators.VGNFactory;
-import pl.zdna.gcconnect.users.application.results.TemporaryUserCreatedResult;
 import pl.zdna.gcconnect.users.domain.Privacy;
 import pl.zdna.gcconnect.users.domain.ReactivationPolicy;
 import pl.zdna.gcconnect.users.domain.TemporaryUser;
@@ -60,8 +58,7 @@ public class UserServiceImpl implements UserService, FutureCorrelationAware {
             return futureCorrelation.futureResponse();
         }
 
-        //TODO
-//        temporaryUserRepository.save(temporaryUser);
+        temporaryUserRepository.save(temporaryUser);
 
         eventPublisher.withCorrelationId(futureCorrelation.correlationId())
                 .publishAll(temporaryUser.getDomainEvents());

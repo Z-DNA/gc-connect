@@ -9,16 +9,17 @@ import pl.zdna.gcconnect.users.domain.TemporaryUserRepository;
 public class TemporaryUserRepositoryImpl implements TemporaryUserRepository {
     @Override
     public void save(final TemporaryUser temporaryUser) {
-        throw new NotImplementedException();
+        //TODO GCC-34
     }
 
     @Override
     public void delete(final TemporaryUser temporaryUser) {
-        throw new NotImplementedException();
+        //TODO GCC-34
     }
 
     @Override
     public TemporaryUser getByUsername(final String username) {
-        throw new NotImplementedException();
+        //TODO GCC-34
+        return null;
     }
 }

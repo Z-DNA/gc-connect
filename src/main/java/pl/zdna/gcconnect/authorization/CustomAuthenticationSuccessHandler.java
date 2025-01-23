@@ -19,7 +19,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                                         final Authentication authentication) throws IOException, ServletException {
         final OidcUser oidcUser = (OidcUser) authentication.getPrincipal();
         log.info("User {} logged in", oidcUser.getClaimAsString("name"));
-        //TODO implement first login and account activation;
+        //TODO activate user if needed GCC-32
         response.sendRedirect("/");
     }
 }
