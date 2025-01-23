@@ -28,6 +28,11 @@ public final class User extends Entity {
         return new User(temporaryUser.getUsername(), temporaryUser.getPhoneNumber(), temporaryUser.getDetails());
     }
 
+    @Deprecated
+    public static User unvalidatedMinimal(final String username){
+        return new User(username, null, UserDetails.uninvited());
+    }
+
     private User(final String username, final String phoneNumber, final UserDetails userDetails){
         this.username = username;
         this.phoneNumber = phoneNumber;

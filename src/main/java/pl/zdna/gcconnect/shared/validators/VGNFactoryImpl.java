@@ -19,14 +19,24 @@ public class VGNFactoryImpl implements VGNFactory {
     private final Generator<?> temporaryPasswordGenerator;
 
     public <T> void validate(final VGNType type, final T object) {
-        Validator<T> validator = (Validator<T>) switch (type) {
+        getValidator(type).validate(object);
+    }
+
+    public <T> boolean isValid(final VGNType type, final T object) {
+        return getValidator(type).isValid(object);
+    }
+
+    public <T> boolean isNotValid(final VGNType type, final T object) {
+        return !isValid(type, object);
+    }
+
+    private <T> Validator<T> getValidator(final VGNType type) {
+        return (Validator<T>) switch (type) {
             case PHONE_NUMBER -> phoneNumberValidator;
             case EMAIL -> emailValidator;
             case USERNAME -> usernameValidator;
             default -> throw new IllegalArgumentException("Unknown validator type: " + type);
         };
-
-        validator.validate(object);
     }
 
     public <T> T normalize(final VGNType type, final T object) {

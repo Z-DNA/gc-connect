@@ -7,7 +7,14 @@
 <div sec:authorize="isAuthenticated()">
     <h2 th:text="'Hi ' + ${profile.get('name')} + '! You are logged in!'"></h2>
     <h1>Invitation</h1>
-    <h2 th:text="'You\'ve invited ' + ${username.getName()} + '!'"></h2>
+    <div th:if="${isInvitationSuccessful}">
+        <p>You've invited <span th:text="${invitedUser.getUsername()}"></span> successfully</p>
+        <p>Temporary password for account activation: <span th:text="${invitedUser.getPassword()}"></span></p>
+    </div>
+    <div th:if="${not isInvitationSuccessful}">
+        <p>The error was encountered while trying to invite:</p>
+        <p th:text="${error}"></p>
+    </div>
     <a th:href="@{/logout}">Log Out</a>
 </div>
 </body>

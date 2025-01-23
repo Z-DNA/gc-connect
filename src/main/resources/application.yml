@@ -18,3 +18,8 @@ com.auth0:
 spring.security.oauth2:
   resourceserver:
     jwt.issuer-uri: https://gc-connect.eu.auth0.com/
+
+logging:
+  level:
+    ROOT: INFO
+    pl.zdna.gcconnect: DEBUG

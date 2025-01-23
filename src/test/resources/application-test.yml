@@ -1,0 +1,8 @@
+gc-service:
+  username-validator-url: ${GC_VALIDATOR_URL}
+  listing-url: ${GC_LISTING_URL}
+
+logging:
+  level:
+    ROOT: INFO
+    pl.zdna.gcconnect: DEBUG

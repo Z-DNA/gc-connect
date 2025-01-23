@@ -8,6 +8,7 @@ import pl.zdna.gcconnect.shared.events.FutureCorrelation;
 import pl.zdna.gcconnect.shared.interfaces.FutureCorrelationAware;
 import pl.zdna.gcconnect.shared.interfaces.CorrelationEventPublisher;
 import pl.zdna.gcconnect.shared.validators.VGNFactory;
+import pl.zdna.gcconnect.users.application.results.TemporaryUserCreatedResult;
 import pl.zdna.gcconnect.users.domain.Privacy;
 import pl.zdna.gcconnect.users.domain.ReactivationPolicy;
 import pl.zdna.gcconnect.users.domain.TemporaryUser;
@@ -48,12 +49,19 @@ public class UserServiceImpl implements UserService, FutureCorrelationAware {
         final User inviter = userRepository.getByUsername(inviterUsername);
         final var builder = TemporaryUser.with(VGNFactory);
 
-        final TemporaryUser temporaryUser = builder.invitedBy(inviter)
-                .setUsername(invitedUsername)
-                .setPhoneNumber(invitedPhoneNumber)
-                .build();
+        TemporaryUser temporaryUser;
+        try {
+            temporaryUser = builder.invitedBy(inviter)
+                    .setUsername(invitedUsername)
+                    .setPhoneNumber(invitedPhoneNumber)
+                    .build();
+        } catch (IllegalArgumentException e) {
+            futureCorrelation.futureResponse().complete(Response.failure(e.getMessage()));
+            return futureCorrelation.futureResponse();
+        }
 
-        temporaryUserRepository.save(temporaryUser);
+        //TODO
+//        temporaryUserRepository.save(temporaryUser);
 
         eventPublisher.withCorrelationId(futureCorrelation.correlationId())
                 .publishAll(temporaryUser.getDomainEvents());
