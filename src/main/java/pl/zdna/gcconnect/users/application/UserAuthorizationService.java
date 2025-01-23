@@ -1,4 +1,4 @@
-package pl.zdna.gcconnect.authorization;
+package pl.zdna.gcconnect.users.application;
 
 import pl.zdna.gcconnect.shared.Response;
 

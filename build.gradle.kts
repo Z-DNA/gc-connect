@@ -36,6 +36,7 @@ dependencies {
 	implementation("com.auth0:mvc-auth-commons:1.11.0")
 	implementation("org.apache.commons:commons-lang3:3.17.0")
 	implementation("com.konghq:unirest-java-core:4.4.5")
+	implementation("com.konghq:unirest-objectmapper-jackson:4.2.9")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("com.mysql:mysql-connector-j")

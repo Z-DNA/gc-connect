@@ -1,9 +1,8 @@
-package pl.zdna.gcconnect.users.infrastructure.vgn;
+package pl.zdna.gcconnect.vgn;
 
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import org.springframework.stereotype.Component;
-import pl.zdna.gcconnect.shared.interfaces.Validator;
 
 @Component
 public class EmailValidator implements Validator<String> {

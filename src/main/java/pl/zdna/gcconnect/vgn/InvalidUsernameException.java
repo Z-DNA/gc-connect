@@ -1,4 +1,4 @@
-package pl.zdna.gcconnect.users.infrastructure.vgn;
+package pl.zdna.gcconnect.vgn;
 
 public class InvalidUsernameException extends IllegalArgumentException {
 

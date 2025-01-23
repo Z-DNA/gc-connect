@@ -5,7 +5,7 @@ import pl.zdna.gcconnect.shared.events.DomainEvent;
 import pl.zdna.gcconnect.users.domain.User;
 
 @Getter
-public final class UserActivated extends DomainEvent {
+public final class UserActivated extends DomainEvent implements EventWithUsername {
     private final String username;
     private final String inviter;
 

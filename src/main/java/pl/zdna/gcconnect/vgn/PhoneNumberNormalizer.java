@@ -1,12 +1,10 @@
-package pl.zdna.gcconnect.users.infrastructure.vgn;
+package pl.zdna.gcconnect.vgn;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
-import pl.zdna.gcconnect.shared.interfaces.Normalizer;
-import pl.zdna.gcconnect.shared.interfaces.Parser;
 
 @Component
 @RequiredArgsConstructor

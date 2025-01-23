@@ -3,10 +3,11 @@ package pl.zdna.gcconnect.users.application.events;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import pl.zdna.gcconnect.shared.events.CorrelationalDomainEvent;
+import pl.zdna.gcconnect.users.domain.events.EventWithUsername;
 
 @Getter
 @RequiredArgsConstructor
-public class AuthenticatedUserCreationFailed extends CorrelationalDomainEvent {
+public class AuthenticatedUserCreationFailed extends CorrelationalDomainEvent implements EventWithUsername {
     private final String username;
     private final String errorMessage;
 }

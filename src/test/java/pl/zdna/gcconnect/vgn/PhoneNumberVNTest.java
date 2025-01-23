@@ -4,13 +4,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.FieldSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import pl.zdna.gcconnect.shared.interfaces.Validator;
-import pl.zdna.gcconnect.users.infrastructure.vgn.PhoneNumberNormalizer;
-import pl.zdna.gcconnect.users.infrastructure.vgn.PhoneNumberParser;
-import pl.zdna.gcconnect.users.infrastructure.vgn.PhoneNumberValidator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

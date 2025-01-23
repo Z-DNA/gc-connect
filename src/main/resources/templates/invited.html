@@ -8,14 +8,14 @@
     <h2 th:text="'Hi ' + ${profile.get('name')} + '! You are logged in!'"></h2>
     <h1>Invitation</h1>
     <div th:if="${isInvitationSuccessful}">
-        <p>You've invited <span th:text="${invitedUser.getUsername()}"></span> successfully</p>
-        <p>Temporary password for account activation: <span th:text="${invitedUser.getPassword()}"></span></p>
+        <p>You've invited <span th:text="${invitedUser.username()}" style="font-size:150%;font-weight:bold"></span> successfully</p>
+        <p>Temporary password for account activation: <span th:text="${invitedUser.password()}" style="font-size:120%;font-weight:bold"></span></p>
     </div>
     <div th:if="${not isInvitationSuccessful}">
         <p>The error was encountered while trying to invite:</p>
-        <p th:text="${error}"></p>
+        <p th:text="${error}" style="color: red;"></p>
+        <a th:href="@{/invite}">Go back</a>
     </div>
-    <a th:href="@{/logout}">Log Out</a>
 </div>
 </body>
 </html>

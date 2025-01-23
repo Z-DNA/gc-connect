@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-import pl.zdna.gcconnect.authorization.UserAuthorizationService;
 import pl.zdna.gcconnect.shared.Response;
 import pl.zdna.gcconnect.shared.events.CorrelationalDomainEvent;
 import pl.zdna.gcconnect.shared.interfaces.FutureCorrelationAware;
@@ -15,6 +14,7 @@ import pl.zdna.gcconnect.users.application.results.AuthenticatedUserCreatedResul
 import pl.zdna.gcconnect.users.application.results.TemporaryUserCreatedResult;
 import pl.zdna.gcconnect.users.domain.TemporaryUser;
 import pl.zdna.gcconnect.users.domain.TemporaryUserRepository;
+import pl.zdna.gcconnect.users.domain.events.EventWithUsername;
 import pl.zdna.gcconnect.users.domain.events.TemporaryUserCreated;
 import pl.zdna.gcconnect.users.domain.events.UserActivated;
 
@@ -31,7 +31,7 @@ public class UserEventService {
 
     @EventListener
     public void onUserActivation(final UserActivated event) {
-        log.debug("Received {} event for: {}", event.getClass().getSimpleName(), event.getUsername());
+        logEvent(event);
         deleteTemporaryUser(event.getUsername());
     }
 
@@ -42,7 +42,7 @@ public class UserEventService {
 
     @EventListener
     public void onTemporaryUserCreated(final TemporaryUserCreated event) {
-        log.debug("Received {} event for: {}", event.getClass().getSimpleName(), event.getInviterUsername());
+        logEvent(event);
         final String username = event.getUsername();
         final Response response = userAuthService.createAuthorizedUser(
                 username, event.getInviterUsername());
@@ -56,7 +56,7 @@ public class UserEventService {
     private CorrelationalDomainEvent getEventForAuthenticatedUserCreation(final Response response, final String username) {
         if (response.isSuccess()) {
             final AuthenticatedUserCreatedResult result = response.getResult();
-            return new AuthenticatedUserCreated(result.username(), result.password());
+            return new AuthenticatedUserCreated(result.username(), result.password(), result.inviterUsername());
         } else {
             return new AuthenticatedUserCreationFailed(username, response.getError());
         }
@@ -64,7 +64,7 @@ public class UserEventService {
 
     @EventListener
     public void onAuthenticatedUserCreated(final AuthenticatedUserCreated event) {
-        log.debug("Received {} event for: {}", event.getClass().getSimpleName(), event.getUsername());
+        logEvent(event);
         final var result = new TemporaryUserCreatedResult(event.getUsername(), event.getPassword());
         final Response response = Response.success(result);
         userService.completeFutureCorrelation(event.getCorrelationId(), response);
@@ -72,9 +72,17 @@ public class UserEventService {
 
     @EventListener
     public void onAuthenticatedUserCreationFailed(final AuthenticatedUserCreationFailed event) {
-        log.debug("Received {} event for: {}", event.getClass().getSimpleName(), event.getUsername());
+        logEvent(event);
         deleteTemporaryUser(event.getUsername());
         final Response response = Response.failure(event.getErrorMessage());
         userService.completeFutureCorrelation(event.getCorrelationId(), response);
+    }
+
+    private void logEvent(final EventWithUsername event) {
+        if (event instanceof final CorrelationalDomainEvent cde){
+            log.debug("Received {} event for user: {} with correlation id: {}", event.getClass().getSimpleName(), event.getUsername(), cde.getCorrelationId());
+        } else {
+            log.debug("Received {} event for user: {}", event.getClass().getSimpleName(), event.getUsername());
+        }
     }
 }

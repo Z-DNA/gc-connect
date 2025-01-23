@@ -8,8 +8,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import pl.zdna.gcconnect.shared.Entity;
-import pl.zdna.gcconnect.shared.validators.VGNFactory;
-import pl.zdna.gcconnect.shared.validators.VGNType;
+import pl.zdna.gcconnect.vgn.VGNFactory;
+import pl.zdna.gcconnect.vgn.VGNType;
 import pl.zdna.gcconnect.users.domain.events.TemporaryUserCreated;
 
 @Getter
