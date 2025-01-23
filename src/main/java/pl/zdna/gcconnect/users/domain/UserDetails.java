@@ -17,6 +17,11 @@ public class UserDetails{
         return new UserDetails(UserAccountStatus.INACTIVE, Instant.now(), inviter.getUsername());
     }
 
+    @Deprecated
+    static UserDetails uninvited() {
+        return new UserDetails(UserAccountStatus.INACTIVE, Instant.now(), null);
+    }
+
     public UserDetails withActiveStatus() {
         return new UserDetails(UserAccountStatus.ACTIVE, creationTimestamp, inviterUsername);
     }

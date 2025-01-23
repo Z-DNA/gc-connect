@@ -1,6 +1,7 @@
 package pl.zdna.gcconnect.users.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import pl.zdna.gcconnect.authorization.UserAuthorizationService;
@@ -17,6 +18,7 @@ import pl.zdna.gcconnect.users.domain.TemporaryUserRepository;
 import pl.zdna.gcconnect.users.domain.events.TemporaryUserCreated;
 import pl.zdna.gcconnect.users.domain.events.UserActivated;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class UserEventService {
@@ -29,6 +31,7 @@ public class UserEventService {
 
     @EventListener
     public void onUserActivation(final UserActivated event) {
+        log.debug("Received {} event for: {}", event.getClass().getSimpleName(), event.getUsername());
         deleteTemporaryUser(event.getUsername());
     }
 
@@ -39,6 +42,7 @@ public class UserEventService {
 
     @EventListener
     public void onTemporaryUserCreated(final TemporaryUserCreated event) {
+        log.debug("Received {} event for: {}", event.getClass().getSimpleName(), event.getInviterUsername());
         final String username = event.getUsername();
         final Response response = userAuthService.createAuthorizedUser(
                 username, event.getInviterUsername());
@@ -60,6 +64,7 @@ public class UserEventService {
 
     @EventListener
     public void onAuthenticatedUserCreated(final AuthenticatedUserCreated event) {
+        log.debug("Received {} event for: {}", event.getClass().getSimpleName(), event.getUsername());
         final var result = new TemporaryUserCreatedResult(event.getUsername(), event.getPassword());
         final Response response = Response.success(result);
         userService.completeFutureCorrelation(event.getCorrelationId(), response);
@@ -67,6 +72,7 @@ public class UserEventService {
 
     @EventListener
     public void onAuthenticatedUserCreationFailed(final AuthenticatedUserCreationFailed event) {
+        log.debug("Received {} event for: {}", event.getClass().getSimpleName(), event.getUsername());
         deleteTemporaryUser(event.getUsername());
         final Response response = Response.failure(event.getErrorMessage());
         userService.completeFutureCorrelation(event.getCorrelationId(), response);

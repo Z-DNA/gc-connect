@@ -7,11 +7,26 @@
 <div sec:authorize="isAuthenticated()">
     <h2 th:text="'Hi ' + ${profile.get('name')} + '! You are logged in!'"></h2>
     <h1>Invitation</h1>
-    <form action="#" th:action="@{/invite}" th:object="${username}" method="post">
-        <p>GC nick: <input type="text" th:field="*{name}" /></p>
-        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+    <form action="#" th:action="@{/invite}" th:object="${inviteUserForm}" method="post">
+        <div>
+            <label for="username">GC username:</label>
+            <input type="text" id="username" name="username" th:field="*{username}" />
+            <ul>
+                <li th:each="err : ${#fields.errors('username')}" th:text="${err}" style="color: red;"></li>
+            </ul>
+        </div>
+        <div>
+            <label for="phoneNumber">Phone number:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}" />
+            <ul>
+                <li th:each="err : ${#fields.errors('phoneNumber')}" th:text="${err}" style="color: red;"></li>
+            </ul>
+        </div>
+        <div>
+            <input type="submit" value="Submit" />
+            <input type="reset" value="Reset" />
+        </div>
     </form>
-    <a th:href="@{/logout}">Log Out</a>
 </div>
 </body>
 </html>
