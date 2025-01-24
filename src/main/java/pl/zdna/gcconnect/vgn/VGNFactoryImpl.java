@@ -1,20 +1,19 @@
 package pl.zdna.gcconnect.vgn;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "SwitchStatementWithTooFewBranches"})
 public class VGNFactoryImpl implements VGNFactory {
-    private final @Qualifier("phoneNumberValidator") Validator<?> phoneNumberValidator;
-    private final @Qualifier("emailValidator") Validator<?> emailValidator;
-    private final @Qualifier("usernameValidator") Validator<?> usernameValidator;
+    private final Validator<?> phoneNumberValidator;
+    private final Validator<?> emailValidator;
+    private final Validator<?> usernameValidator;
 
-    private final @Qualifier("phoneNumberNormalizer") Normalizer<?> phoneNumberNormalizer;
+    private final Normalizer<?> phoneNumberNormalizer;
 
-    private final @Qualifier("temporaryPasswordGenerator") Generator<?> temporaryPasswordGenerator;
+    private final Generator<?> temporaryPasswordGenerator;
 
     public <T> void validate(final VGNType type, final T object) {
         getValidator(type).validate(object);

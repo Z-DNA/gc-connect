@@ -2,7 +2,6 @@ package pl.zdna.gcconnect.users.presentation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
@@ -16,16 +15,16 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.zdna.gcconnect.shared.Response;
-import pl.zdna.gcconnect.vgn.VGNFactory;
 import pl.zdna.gcconnect.users.application.UserService;
 import pl.zdna.gcconnect.users.application.results.TemporaryUserCreatedResult;
+import pl.zdna.gcconnect.vgn.VGNFactory;
 
 @Log4j2
 @Controller
 @RequiredArgsConstructor
 public class ProfileController {
     private final UserService userService;
-    private final @Qualifier("inviteUserFormValidator") Validator inviteUserFormValidator;
+    private final Validator inviteUserFormValidator;
     private final VGNFactory vgnFactory;
 
     @ModelAttribute
