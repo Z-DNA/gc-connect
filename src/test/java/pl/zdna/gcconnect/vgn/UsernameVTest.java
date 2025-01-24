@@ -19,13 +19,14 @@ public class UsernameVTest {
 
     @BeforeEach
     @SneakyThrows
-    public void waitToProtectServiceFlood(){
-        final int time = 1000 + (int) (Math.random()*1000);
+    public void waitToProtectServiceFlood() {
+        final int time = 1000 + (int) (Math.random() * 1000);
         Thread.sleep(time);
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"Z-DNA", "z-dna", "Svarträv"})
+    @ValueSource(strings = {"test", "tEsT", "valid", "VAliD"})
+    //TODO GCC-39
     public void shouldValidateCorrectUsernameAsValid(final String username) {
         final boolean isValid = usernameValidator.isValid(username);
         assertTrue(isValid, "Expected username %s to be valid".formatted(username));
