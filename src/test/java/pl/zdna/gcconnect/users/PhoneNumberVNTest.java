@@ -16,6 +16,7 @@ import pl.zdna.gcconnect.vgn.PhoneNumberParser;
 import pl.zdna.gcconnect.vgn.PhoneNumberValidator;
 import pl.zdna.gcconnect.vgn.Validator;
 
+@SuppressWarnings("unused")
 public class PhoneNumberVNTest {
     // TODO: Create PhoneNumberFactory and mutatePhoneNumber(String phoneNumber)
     // for creating valid but not normalized forms
