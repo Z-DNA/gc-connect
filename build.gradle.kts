@@ -1,9 +1,12 @@
+import com.adarshr.gradle.testlogger.theme.ThemeType
+
 plugins {
     java
     id("org.springframework.boot") version "3.4.2"
     id("io.spring.dependency-management") version "1.1.7"
     id("io.freefair.lombok") version "8.11"
     id("com.diffplug.spotless") version "7.0.2"
+    id("com.adarshr.test-logger") version "4.0.0"
 }
 
 group = "pl.z-dna"
@@ -19,6 +22,11 @@ spotless {
         googleJavaFormat("1.25.2").aosp().reorderImports(true)
         formatAnnotations()
     }
+}
+
+testlogger {
+    theme = ThemeType.MOCHA
+    slowThreshold = 5000
 }
 
 java {
@@ -54,6 +62,27 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.withType<Test>().configureEach {
-    useJUnitPlatform()
+val test = tasks.named<Test>("test"){
+    useJUnitPlatform{
+        excludeTags("extended")
+    }
+}
+
+val extendedTest = tasks.register<Test>("extendedTest") {
+    useJUnitPlatform {
+        includeTags("extended")
+    }
+    shouldRunAfter(test)
+}
+
+val check by tasks.existing
+val spotlessCheck by tasks.existing
+val fullCheck = tasks.register("fullCheck") {
+    group = "verification"
+    description = "Runs all verifications, including extended tests and spotless check"
+    dependsOn(check, extendedTest)
+}
+
+tasks.named("build") {
+    dependsOn(fullCheck)
 }

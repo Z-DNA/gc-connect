@@ -1,4 +1,4 @@
-package pl.zdna.gcconnect.vgn;
+package pl.zdna.gcconnect.users;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -11,6 +11,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.FieldSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 
+import pl.zdna.gcconnect.vgn.PhoneNumberNormalizer;
+import pl.zdna.gcconnect.vgn.PhoneNumberParser;
+import pl.zdna.gcconnect.vgn.PhoneNumberValidator;
+import pl.zdna.gcconnect.vgn.Validator;
+
+@SuppressWarnings("unused")
 public class PhoneNumberVNTest {
     // TODO: Create PhoneNumberFactory and mutatePhoneNumber(String phoneNumber)
     // for creating valid but not normalized forms
