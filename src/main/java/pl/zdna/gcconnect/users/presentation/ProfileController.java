@@ -2,6 +2,7 @@ package pl.zdna.gcconnect.users.presentation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import pl.zdna.gcconnect.shared.Response;
 import pl.zdna.gcconnect.users.application.UserService;
 import pl.zdna.gcconnect.users.application.results.TemporaryUserCreatedResult;
@@ -28,7 +30,7 @@ public class ProfileController {
     private final VGNFactory vgnFactory;
 
     @ModelAttribute
-    public void addCommonAttributes(Model model, Authentication authentication){
+    public void addCommonAttributes(Model model, Authentication authentication) {
         if (authentication != null && authentication.getPrincipal() instanceof OidcUser oidcUser) {
             model.addAttribute("profile", oidcUser.getClaims());
         }
@@ -51,35 +53,39 @@ public class ProfileController {
     }
 
     @PostMapping(value = "/invite")
-    public String invite(Model model,
-                         @Validated @ModelAttribute InviteUserForm inviteUserForm,
-                         BindingResult bindingResult) {
+    public String invite(
+            Model model,
+            @Validated @ModelAttribute InviteUserForm inviteUserForm,
+            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(error -> log.debug("Validation error: {}", error.getDefaultMessage()));
+            bindingResult
+                    .getAllErrors()
+                    .forEach(error -> log.debug("Validation error: {}", error.getDefaultMessage()));
             model.addAttribute("inviteUserForm", inviteUserForm);
             return "invite";
         }
 
-        final var futureResponse = userService.createTemporaryUser(inviteUserForm.getUsername(), inviteUserForm.getPhoneNumber());
+        final var futureResponse =
+                userService.createTemporaryUser(
+                        inviteUserForm.getUsername(), inviteUserForm.getPhoneNumber());
         handleResponseForUserInvitation(model, futureResponse.join());
         return "invited";
     }
 
-    private void handleResponseForUserInvitation(final Model model, final Response response){
+    private void handleResponseForUserInvitation(final Model model, final Response response) {
         if (response.isSuccess())
             handleSuccessResponseForUserInvitation(model, response.getResult());
-        else
-            handleFailedResponseForUserInvitation(model, response.getError());
+        else handleFailedResponseForUserInvitation(model, response.getError());
     }
 
-    private void handleSuccessResponseForUserInvitation(final Model model, final TemporaryUserCreatedResult result) {
+    private void handleSuccessResponseForUserInvitation(
+            final Model model, final TemporaryUserCreatedResult result) {
         model.addAttribute("isInvitationSuccessful", true);
         model.addAttribute("invitedUser", result);
     }
 
-    private void handleFailedResponseForUserInvitation(final Model model, final String error){
+    private void handleFailedResponseForUserInvitation(final Model model, final String error) {
         model.addAttribute("isInvitationSuccessful", false);
         model.addAttribute("error", error);
     }
 }
-

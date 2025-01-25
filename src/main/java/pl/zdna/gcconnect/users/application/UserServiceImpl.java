@@ -1,18 +1,20 @@
 package pl.zdna.gcconnect.users.application;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
+
 import pl.zdna.gcconnect.shared.Response;
 import pl.zdna.gcconnect.shared.events.FutureCorrelation;
-import pl.zdna.gcconnect.shared.interfaces.FutureCorrelationAware;
 import pl.zdna.gcconnect.shared.interfaces.CorrelationEventPublisher;
-import pl.zdna.gcconnect.vgn.VGNFactory;
+import pl.zdna.gcconnect.shared.interfaces.FutureCorrelationAware;
 import pl.zdna.gcconnect.users.domain.Privacy;
 import pl.zdna.gcconnect.users.domain.ReactivationPolicy;
 import pl.zdna.gcconnect.users.domain.TemporaryUser;
 import pl.zdna.gcconnect.users.domain.TemporaryUserRepository;
 import pl.zdna.gcconnect.users.domain.User;
 import pl.zdna.gcconnect.users.domain.UserRepository;
+import pl.zdna.gcconnect.vgn.VGNFactory;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -39,7 +41,8 @@ public class UserServiceImpl implements UserService, FutureCorrelationAware {
     }
 
     @Override
-    public CompletableFuture<Response> createTemporaryUser(final String invitedUsername, final String invitedPhoneNumber) {
+    public CompletableFuture<Response> createTemporaryUser(
+            final String invitedUsername, final String invitedPhoneNumber) {
         final FutureCorrelation futureCorrelation = newFutureCorrelation();
 
         final String inviterUsername = loggedInUserService.getLoggedInUsername();
@@ -48,10 +51,11 @@ public class UserServiceImpl implements UserService, FutureCorrelationAware {
 
         TemporaryUser temporaryUser;
         try {
-            temporaryUser = builder.invitedBy(inviter)
-                    .setUsername(invitedUsername)
-                    .setPhoneNumber(invitedPhoneNumber)
-                    .build();
+            temporaryUser =
+                    builder.invitedBy(inviter)
+                            .setUsername(invitedUsername)
+                            .setPhoneNumber(invitedPhoneNumber)
+                            .build();
         } catch (IllegalArgumentException e) {
             futureCorrelation.futureResponse().complete(Response.failure(e.getMessage()));
             return futureCorrelation.futureResponse();
@@ -59,7 +63,8 @@ public class UserServiceImpl implements UserService, FutureCorrelationAware {
 
         temporaryUserRepository.save(temporaryUser);
 
-        eventPublisher.withCorrelationId(futureCorrelation.correlationId())
+        eventPublisher
+                .withCorrelationId(futureCorrelation.correlationId())
                 .publishAll(temporaryUser.getDomainEvents());
         temporaryUser.clearDomainEvents();
 

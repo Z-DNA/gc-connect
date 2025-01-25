@@ -1,8 +1,10 @@
 package pl.zdna.gcconnect.notifications;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+
 import pl.zdna.gcconnect.users.domain.events.PhoneNumberChanged;
 import pl.zdna.gcconnect.users.domain.events.UserActivated;
 

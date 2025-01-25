@@ -1,6 +1,7 @@
 package pl.zdna.gcconnect.authorization;
 
 import lombok.extern.log4j.Log4j2;
+
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -23,14 +24,23 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        final HttpSecurity httpSecurity = http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/hello").permitAll()
-                        .requestMatchers("/login").permitAll()
-                        .anyRequest().authenticated())
-//                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
-//                .oauth2Login(login -> login.loginPage("/login").permitAll());
-                .oauth2Login(oauth2 -> oauth2.successHandler(handler()));
+        final HttpSecurity httpSecurity =
+                http.authorizeHttpRequests(
+                                authorize ->
+                                        authorize
+                                                .requestMatchers("/")
+                                                .permitAll()
+                                                .requestMatchers("/hello")
+                                                .permitAll()
+                                                .requestMatchers("/login")
+                                                .permitAll()
+                                                .anyRequest()
+                                                .authenticated())
+                        //                .oauth2ResourceServer((oauth2) ->
+                        // oauth2.jwt(Customizer.withDefaults()));
+                        //                .oauth2Login(login ->
+                        // login.loginPage("/login").permitAll());
+                        .oauth2Login(oauth2 -> oauth2.successHandler(handler()));
         return http.build();
     }
 
@@ -40,7 +50,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationSuccessHandler handler(){
+    public AuthenticationSuccessHandler handler() {
         return new CustomAuthenticationSuccessHandler();
     }
 }

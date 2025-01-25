@@ -2,6 +2,7 @@ package pl.zdna.gcconnect.users.domain.events;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
 import pl.zdna.gcconnect.shared.events.DomainEvent;
 
 @Getter

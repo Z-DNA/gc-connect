@@ -2,6 +2,7 @@ package pl.zdna.gcconnect.vgn;
 
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
+
 import org.springframework.stereotype.Component;
 
 @Component

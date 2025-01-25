@@ -3,6 +3,7 @@ package pl.zdna.gcconnect.shared;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
 import pl.zdna.gcconnect.shared.interfaces.Result;
 
 @Getter
