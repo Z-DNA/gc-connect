@@ -3,10 +3,22 @@ plugins {
     id("org.springframework.boot") version "3.4.2"
     id("io.spring.dependency-management") version "1.1.7"
     id("io.freefair.lombok") version "8.11"
+    id("com.diffplug.spotless") version "7.0.2"
 }
 
 group = "pl.z-dna"
 version = "0.0.1-SNAPSHOT"
+
+spotless {
+    java {
+//        cleanthat()
+//            .version("2.21")
+//            .addMutator("SafeAndConsensual")
+        removeUnusedImports()
+        googleJavaFormat("1.25.2").aosp().reorderImports(true)
+        formatAnnotations()
+    }
+}
 
 java {
     toolchain {
