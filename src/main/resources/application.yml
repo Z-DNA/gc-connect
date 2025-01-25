@@ -20,3 +20,5 @@ logging:
   level:
     ROOT: INFO
     pl.zdna.gcconnect: DEBUG
+    org.springframework.boot:
+      spring-boot-autoconfigure: ERROR
