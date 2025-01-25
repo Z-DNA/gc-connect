@@ -1,6 +1,7 @@
 package pl.zdna.gcconnect.users.domain.events;
 
 import lombok.Getter;
+
 import pl.zdna.gcconnect.shared.events.DomainEvent;
 import pl.zdna.gcconnect.users.domain.User;
 

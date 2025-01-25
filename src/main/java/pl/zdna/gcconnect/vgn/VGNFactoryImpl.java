@@ -1,6 +1,7 @@
 package pl.zdna.gcconnect.vgn;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,28 +29,38 @@ public class VGNFactoryImpl implements VGNFactory {
     }
 
     private <T> Validator<T> getValidator(final VGNType type) {
-        return (Validator<T>) switch (type) {
-            case PHONE_NUMBER -> phoneNumberValidator;
-            case EMAIL -> emailValidator;
-            case USERNAME -> usernameValidator;
-            default -> throw new IllegalArgumentException("Unknown validator type: " + type);
-        };
+        return (Validator<T>)
+                switch (type) {
+                    case PHONE_NUMBER -> phoneNumberValidator;
+                    case EMAIL -> emailValidator;
+                    case USERNAME -> usernameValidator;
+                    default ->
+                            throw new IllegalArgumentException("Unknown validator type: " + type);
+                };
     }
 
     public <T> T normalize(final VGNType type, final T object) {
-        Normalizer<T> normalizer = (Normalizer<T>) switch (type) {
-            case PHONE_NUMBER -> phoneNumberNormalizer;
-            default -> throw new IllegalArgumentException("Unknown normalizer type: " + type);
-        };
+        Normalizer<T> normalizer =
+                (Normalizer<T>)
+                        switch (type) {
+                            case PHONE_NUMBER -> phoneNumberNormalizer;
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "Unknown normalizer type: " + type);
+                        };
 
         return normalizer.normalize(object);
     }
 
     public <T> T generate(final VGNType type) {
-        Generator<T> generator = (Generator<T>) switch (type) {
-            case PASSWORD -> temporaryPasswordGenerator;
-            default -> throw new IllegalArgumentException("Unknown generator type: " + type);
-        };
+        Generator<T> generator =
+                (Generator<T>)
+                        switch (type) {
+                            case PASSWORD -> temporaryPasswordGenerator;
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "Unknown generator type: " + type);
+                        };
 
         return generator.generate();
     }

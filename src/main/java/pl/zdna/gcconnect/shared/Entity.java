@@ -13,9 +13,15 @@ public abstract class Entity {
         return Collections.unmodifiableList(events);
     }
 
-    protected void addDomainEvent(final DomainEvent event) { events.add(event); }
+    protected void addDomainEvent(final DomainEvent event) {
+        events.add(event);
+    }
 
-    protected void removeDomainEvent(final DomainEvent event) { events.remove(event); }
+    protected void removeDomainEvent(final DomainEvent event) {
+        events.remove(event);
+    }
 
-    public void clearDomainEvents() { events.clear(); }
+    public void clearDomainEvents() {
+        events.clear();
+    }
 }

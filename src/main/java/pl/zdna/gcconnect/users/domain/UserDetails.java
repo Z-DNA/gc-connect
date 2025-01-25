@@ -8,7 +8,7 @@ import java.time.Instant;
 
 @Value
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserDetails{
+public class UserDetails {
     UserAccountStatus status;
     Instant creationTimestamp;
     String inviterUsername;

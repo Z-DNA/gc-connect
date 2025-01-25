@@ -8,10 +8,15 @@ import java.util.concurrent.CompletableFuture;
 
 public interface UserService {
     void activateTemporaryUser();
-    CompletableFuture<Response> createTemporaryUser(String invitedUsername, String invitedPhoneNumber);
+
+    CompletableFuture<Response> createTemporaryUser(
+            String invitedUsername, String invitedPhoneNumber);
 
     void changePhoneNumber(String phoneNumber);
+
     void changeEmail(String email);
+
     void changePrivacy(Privacy privacy);
+
     void changeReactivationPolicy(ReactivationPolicy reactivationPolicy);
 }

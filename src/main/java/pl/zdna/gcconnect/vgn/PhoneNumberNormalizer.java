@@ -2,8 +2,10 @@ package pl.zdna.gcconnect.vgn;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,6 +18,7 @@ public class PhoneNumberNormalizer implements Normalizer<String> {
     @Override
     public String normalize(String number) {
         final Phonenumber.PhoneNumber parsedNumber = parser.parse(number);
-        return PHONE_NUMBER_UTIL.format(parsedNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+        return PHONE_NUMBER_UTIL.format(
+                parsedNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
     }
 }

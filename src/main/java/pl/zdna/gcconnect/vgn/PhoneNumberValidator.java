@@ -2,8 +2,10 @@ package pl.zdna.gcconnect.vgn;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,7 +16,7 @@ public class PhoneNumberValidator implements Validator<String> {
 
     @Override
     public void validate(final String number) {
-        try{
+        try {
             validateNumber(number);
         } catch (Exception _) {
             throw new InvalidPhoneNumberException(number);
@@ -23,15 +25,16 @@ public class PhoneNumberValidator implements Validator<String> {
 
     private void validateNumber(final @NonNull String number) throws Exception {
         var parsedNumber = parser.parse(number);
-        if (isNotValidNumber(parsedNumber) || isNotMobile(parsedNumber))
-            throw new Exception();
+        if (isNotValidNumber(parsedNumber) || isNotMobile(parsedNumber)) throw new Exception();
     }
 
-    private boolean isNotValidNumber(final Phonenumber.PhoneNumber parsedNumber){
+    private boolean isNotValidNumber(final Phonenumber.PhoneNumber parsedNumber) {
         return !PHONE_NUMBER_UTIL.isValidNumber(parsedNumber);
     }
 
     private boolean isNotMobile(final Phonenumber.PhoneNumber parsedNumber) {
-        return !PHONE_NUMBER_UTIL.getNumberType(parsedNumber).equals(PhoneNumberUtil.PhoneNumberType.MOBILE);
+        return !PHONE_NUMBER_UTIL
+                .getNumberType(parsedNumber)
+                .equals(PhoneNumberUtil.PhoneNumberType.MOBILE);
     }
 }

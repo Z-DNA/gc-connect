@@ -6,11 +6,12 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+
 import pl.zdna.gcconnect.shared.Entity;
-import pl.zdna.gcconnect.vgn.VGNFactory;
-import pl.zdna.gcconnect.vgn.VGNType;
 import pl.zdna.gcconnect.users.domain.events.PhoneNumberChanged;
 import pl.zdna.gcconnect.users.domain.events.UserActivated;
+import pl.zdna.gcconnect.vgn.VGNFactory;
+import pl.zdna.gcconnect.vgn.VGNType;
 
 @Getter
 @ToString
@@ -25,15 +26,18 @@ public final class User extends Entity {
     private ReactivationPolicy reactivationPolicy = ReactivationPolicy.getDefault();
 
     public static User createActiveUserFrom(final TemporaryUser temporaryUser) {
-        return new User(temporaryUser.getUsername(), temporaryUser.getPhoneNumber(), temporaryUser.getDetails());
+        return new User(
+                temporaryUser.getUsername(),
+                temporaryUser.getPhoneNumber(),
+                temporaryUser.getDetails());
     }
 
     @Deprecated
-    public static User unvalidatedMinimal(final String username){
+    public static User unvalidatedMinimal(final String username) {
         return new User(username, null, UserDetails.uninvited());
     }
 
-    private User(final String username, final String phoneNumber, final UserDetails userDetails){
+    private User(final String username, final String phoneNumber, final UserDetails userDetails) {
         this.username = username;
         this.phoneNumber = phoneNumber;
         this.userDetails = userDetails.withActiveStatus();
@@ -79,4 +83,3 @@ public final class User extends Entity {
         }
     }
 }
-

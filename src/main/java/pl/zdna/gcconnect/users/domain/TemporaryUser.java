@@ -7,10 +7,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+
 import pl.zdna.gcconnect.shared.Entity;
+import pl.zdna.gcconnect.users.domain.events.TemporaryUserCreated;
 import pl.zdna.gcconnect.vgn.VGNFactory;
 import pl.zdna.gcconnect.vgn.VGNType;
-import pl.zdna.gcconnect.users.domain.events.TemporaryUserCreated;
 
 @Getter
 @ToString
@@ -44,13 +45,14 @@ public final class TemporaryUser extends Entity {
 
         public TemporaryUser build() {
             validate();
-            var user = new TemporaryUser(username, phoneNumber, UserDetails.newUserDefault(inviter));
+            var user =
+                    new TemporaryUser(username, phoneNumber, UserDetails.newUserDefault(inviter));
             user.addDomainEvent(new TemporaryUserCreated(username, inviter));
 
             return user;
         }
 
-        private void validate(){
+        private void validate() {
             if (inviter == null) {
                 throw new IllegalArgumentException("Inviter cannot be null");
             }
