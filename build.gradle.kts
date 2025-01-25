@@ -11,9 +11,10 @@ version = "0.0.1-SNAPSHOT"
 
 spotless {
     java {
-//        cleanthat()
-//            .version("2.21")
-//            .addMutator("SafeAndConsensual")
+        cleanthat()
+            .sourceCompatibility("23")
+            .version("2.21")
+            .addMutator("SafeAndConsensual")
         removeUnusedImports()
         googleJavaFormat("1.25.2").aosp().reorderImports(true)
         formatAnnotations()
