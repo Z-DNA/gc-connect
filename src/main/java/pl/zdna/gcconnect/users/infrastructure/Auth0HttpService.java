@@ -11,7 +11,10 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import pl.zdna.gcconnect.users.application.AuthorizationHttpService;
+import pl.zdna.gcconnect.users.domain.UserAccountStatus;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,7 +69,9 @@ public class Auth0HttpService implements AuthorizationHttpService {
         body.put("connection", auth0Data.connection());
         body.put("password", password);
         body.put("username", username);
-        body.put("app_metadata", Map.of("inviter", inviterUsername));
+        body.put(
+                "app_metadata",
+                Map.of("inviter", inviterUsername, "status", UserAccountStatus.newUserStatus()));
         return body;
     }
 
@@ -92,5 +97,36 @@ public class Auth0HttpService implements AuthorizationHttpService {
     @Override
     public void resetPassword(final String username) {
         // TODO implement GCC-33
+    }
+
+    @Override
+    public void activateUser(String userId) {
+        log.debug("Activating user {} in auth0", userId);
+        final String encodedUserId = URLEncoder.encode(userId, StandardCharsets.UTF_8);
+        final String url = auth0Data.apiUrl() + "users/%s".formatted(encodedUserId);
+
+        final HttpResponse<JsonNode> response =
+                Unirest.patch(url)
+                        .header("Authorization", "Bearer " + getAccessToken())
+                        .header("Content-Type", "application/json")
+                        .body(activateUserBody())
+                        .asJson();
+
+        handleActivateUserResponse(response, userId);
+    }
+
+    private Map<String, Object> activateUserBody() {
+        return Map.of("app_metadata", Map.of("status", UserAccountStatus.ACTIVE));
+    }
+
+    private void handleActivateUserResponse(
+            final HttpResponse<JsonNode> response, final String userId) {
+        // TODO handle errors GCC-31
+        if (response.getStatus() == HttpStatus.OK) {
+            log.debug("User {} activated", userId);
+        } else {
+            throw new RuntimeException(
+                    "Failed to activate user: %s; Error: %s".formatted(userId, response.getBody()));
+        }
     }
 }

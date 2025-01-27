@@ -4,4 +4,6 @@ import pl.zdna.gcconnect.shared.Response;
 
 public interface UserAuthorizationService {
     Response createAuthorizedUser(String username, String inviterUsername);
+
+    Response activateUser(String userId);
 }

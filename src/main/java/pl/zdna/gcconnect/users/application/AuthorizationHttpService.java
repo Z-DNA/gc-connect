@@ -6,4 +6,6 @@ public interface AuthorizationHttpService {
     void deleteUser(String username);
 
     void resetPassword(String username);
+
+    void activateUser(String username);
 }

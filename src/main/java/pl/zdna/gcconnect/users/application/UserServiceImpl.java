@@ -1,40 +1,41 @@
 package pl.zdna.gcconnect.users.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 
 import org.springframework.stereotype.Service;
 
 import pl.zdna.gcconnect.shared.Response;
 import pl.zdna.gcconnect.shared.events.FutureCorrelation;
 import pl.zdna.gcconnect.shared.interfaces.CorrelationEventPublisher;
-import pl.zdna.gcconnect.shared.interfaces.FutureCorrelationAware;
 import pl.zdna.gcconnect.users.domain.Privacy;
 import pl.zdna.gcconnect.users.domain.ReactivationPolicy;
 import pl.zdna.gcconnect.users.domain.TemporaryUser;
-import pl.zdna.gcconnect.users.domain.TemporaryUserRepository;
 import pl.zdna.gcconnect.users.domain.User;
-import pl.zdna.gcconnect.users.domain.UserRepository;
 import pl.zdna.gcconnect.vgn.VGNFactory;
 
 import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService, FutureCorrelationAware {
+public class UserServiceImpl implements UserService {
     private final LoggedInUserService loggedInUserService;
     private final VGNFactory VGNFactory;
     private final CorrelationEventPublisher eventPublisher;
 
     private final UserRepository userRepository;
     private final TemporaryUserRepository temporaryUserRepository;
+    private final TemporaryUserSpecification temporaryUserSpecification;
 
     @Override
-    public void activateTemporaryUser() {
-        final String loggedInUsername = loggedInUserService.getLoggedInUsername();
-        final TemporaryUser temporaryUser = temporaryUserRepository.getByUsername(loggedInUsername);
-        final User activeUser = User.createActiveUserFrom(temporaryUser);
+    public void activateTemporaryUser(final String username, String userId) {
+        val specs = temporaryUserSpecification.isWaitingForActivationHavingUsername(username);
+        val temporaryUser = temporaryUserRepository.getOneBy(specs);
+        final User activeUser = User.createActiveUserFrom(temporaryUser, userId);
+        temporaryUser.useDetailsFromActivatedUser(activeUser);
 
         userRepository.save(activeUser);
+        temporaryUserRepository.update(temporaryUser);
 
         eventPublisher.publishAll(activeUser.getDomainEvents());
         activeUser.clearDomainEvents();
@@ -45,21 +46,15 @@ public class UserServiceImpl implements UserService, FutureCorrelationAware {
             final String invitedUsername, final String invitedPhoneNumber) {
         final FutureCorrelation futureCorrelation = newFutureCorrelation();
 
-        final String inviterUsername = loggedInUserService.getLoggedInUsername();
+        final String inviterUsername = loggedInUserService.getLoggedInUsername(); // TODO GCC-43
         final User inviter = userRepository.getByUsername(inviterUsername);
-        final var builder = TemporaryUser.with(VGNFactory);
 
-        TemporaryUser temporaryUser;
-        try {
-            temporaryUser =
-                    builder.invitedBy(inviter)
-                            .setUsername(invitedUsername)
-                            .setPhoneNumber(invitedPhoneNumber)
-                            .build();
-        } catch (IllegalArgumentException e) {
-            futureCorrelation.futureResponse().complete(Response.failure(e.getMessage()));
-            return futureCorrelation.futureResponse();
-        }
+        final TemporaryUser temporaryUser =
+                TemporaryUser.with(VGNFactory)
+                        .invitedBy(inviter)
+                        .setUsername(invitedUsername)
+                        .setPhoneNumber(invitedPhoneNumber)
+                        .build(); // TODO GCC-44
 
         temporaryUserRepository.save(temporaryUser);
 

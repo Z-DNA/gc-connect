@@ -18,6 +18,10 @@ public class Response {
         return (T) result;
     }
 
+    public static Response success() {
+        return new Response(true, null, null);
+    }
+
     public static <T extends Result> Response success(final T result) {
         return new Response(true, result, null);
     }

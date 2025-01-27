@@ -42,8 +42,13 @@ public class ProfileController {
     }
 
     @GetMapping(value = "/")
-    public String index(Model model, Authentication authentication) {
+    public String index() {
         return "index";
+    }
+
+    @GetMapping(value = "/welcome")
+    public String welcome() {
+        return "welcome";
     }
 
     @GetMapping(value = "/invite")

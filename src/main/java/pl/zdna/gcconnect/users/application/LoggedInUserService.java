@@ -6,4 +6,6 @@ public interface LoggedInUserService {
     OidcUser getLoggedInPrincipal();
 
     String getLoggedInUsername();
+
+    String getLoggedInUserId();
 }
