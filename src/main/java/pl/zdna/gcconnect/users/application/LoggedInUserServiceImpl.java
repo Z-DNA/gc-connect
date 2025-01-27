@@ -21,6 +21,11 @@ public class LoggedInUserServiceImpl implements LoggedInUserService {
 
     @Override
     public String getLoggedInUsername() {
-        return getLoggedInPrincipal().getName();
+        return getLoggedInPrincipal().getClaimAsString("name");
+    }
+
+    @Override
+    public String getLoggedInUserId() {
+        return getLoggedInPrincipal().getSubject();
     }
 }

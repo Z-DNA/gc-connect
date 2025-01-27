@@ -1,6 +1,7 @@
 package pl.zdna.gcconnect.users.domain;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
@@ -16,17 +17,21 @@ import pl.zdna.gcconnect.vgn.VGNType;
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
 public final class User extends Entity {
+    private final String id; // TODO GCC-43
     private final String username;
     private String phoneNumber;
-    private final UserDetails userDetails;
+    private final UserDetails details;
 
     private String email;
     private Privacy privacy = Privacy.getDefault();
     private ReactivationPolicy reactivationPolicy = ReactivationPolicy.getDefault();
 
-    public static User createActiveUserFrom(final TemporaryUser temporaryUser) {
+    public static User createActiveUserFrom(
+            final TemporaryUser temporaryUser, final String userId) {
         return new User(
+                userId,
                 temporaryUser.getUsername(),
                 temporaryUser.getPhoneNumber(),
                 temporaryUser.getDetails());
@@ -34,19 +39,24 @@ public final class User extends Entity {
 
     @Deprecated
     public static User unvalidatedMinimal(final String username) {
-        return new User(username, null, UserDetails.uninvited());
+        return new User(null, username, null, UserDetails.uninvited());
     }
 
-    private User(final String username, final String phoneNumber, final UserDetails userDetails) {
+    private User(
+            final String userId,
+            final String username,
+            final String phoneNumber,
+            final UserDetails details) {
+        this.id = userId;
         this.username = username;
         this.phoneNumber = phoneNumber;
-        this.userDetails = userDetails.withActiveStatus();
+        this.details = details.userActivated();
 
         addDomainEvent(new UserActivated(this));
     }
 
     public String getInviterUsername() {
-        return userDetails.getInviterUsername();
+        return details.inviterUsername();
     }
 
     public void changePrivacy(final Privacy privacy) {

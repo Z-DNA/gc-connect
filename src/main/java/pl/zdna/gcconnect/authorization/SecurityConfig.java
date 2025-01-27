@@ -3,7 +3,6 @@ package pl.zdna.gcconnect.authorization;
 import lombok.extern.log4j.Log4j2;
 
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,12 +15,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @Log4j2
 @Configuration
 @EnableWebSecurity
-@ConfigurationProperties(prefix = "com.auth0")
 public class SecurityConfig {
-    private String domain;
-    private String clientId;
-    private String clientSecret;
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         final HttpSecurity httpSecurity =

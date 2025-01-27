@@ -32,4 +32,16 @@ public class UserAuthorizationServiceImpl implements UserAuthorizationService {
         return Response.success(
                 new AuthenticatedUserCreatedResult(username, password, inviterUsername));
     }
+
+    @Override
+    public Response activateUser(String userId) {
+        try {
+            authorizationHttpService.activateUser(userId);
+        } catch (Exception e) {
+            // TODO GCC-31
+            log.error("Failed to activate user {}", userId, e);
+            return Response.failure(e.getMessage());
+        }
+        return Response.success();
+    }
 }

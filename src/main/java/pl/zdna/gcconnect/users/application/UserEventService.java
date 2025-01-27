@@ -2,20 +2,19 @@ package pl.zdna.gcconnect.users.application;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import lombok.val;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
+import pl.zdna.gcconnect.authorization.UserFirstLogin;
 import pl.zdna.gcconnect.shared.Response;
 import pl.zdna.gcconnect.shared.events.CorrelationalDomainEvent;
 import pl.zdna.gcconnect.shared.interfaces.CorrelationEventPublisher;
-import pl.zdna.gcconnect.shared.interfaces.FutureCorrelationAware;
 import pl.zdna.gcconnect.users.application.events.AuthenticatedUserCreated;
 import pl.zdna.gcconnect.users.application.events.AuthenticatedUserCreationFailed;
 import pl.zdna.gcconnect.users.application.results.AuthenticatedUserCreatedResult;
 import pl.zdna.gcconnect.users.application.results.TemporaryUserCreatedResult;
-import pl.zdna.gcconnect.users.domain.TemporaryUser;
-import pl.zdna.gcconnect.users.domain.TemporaryUserRepository;
 import pl.zdna.gcconnect.users.domain.events.EventWithUsername;
 import pl.zdna.gcconnect.users.domain.events.TemporaryUserCreated;
 import pl.zdna.gcconnect.users.domain.events.UserActivated;
@@ -25,31 +24,32 @@ import pl.zdna.gcconnect.users.domain.events.UserActivated;
 @RequiredArgsConstructor
 public class UserEventService {
     private final CorrelationEventPublisher eventPublisher;
-
-    private final FutureCorrelationAware userService;
+    private final UserService userService;
     private final UserAuthorizationService userAuthService;
-
     private final TemporaryUserRepository temporaryUserRepository;
 
     @EventListener
-    public void onUserActivation(final UserActivated event) {
+    public void onUserFirstLogin(final UserFirstLogin event) {
         logEvent(event);
-        deleteTemporaryUser(event.getUsername());
+        userService.activateTemporaryUser(event.getUsername(), event.getUserId());
     }
 
-    private void deleteTemporaryUser(final String username) {
-        final TemporaryUser temporaryUser = temporaryUserRepository.getByUsername(username);
-        temporaryUserRepository.delete(temporaryUser);
+    @EventListener
+    public void onUserActivated(final UserActivated event) {
+        logEvent(event);
+        val response = userAuthService.activateUser(event.getUserId());
+        if (response.isSuccess()) {
+            log.debug("User {} activated", event.getUserId());
+        }
+        // TODO GCC-48
     }
 
     @EventListener
     public void onTemporaryUserCreated(final TemporaryUserCreated event) {
         logEvent(event);
         final String username = event.getUsername();
-        final Response response =
-                userAuthService.createAuthorizedUser(username, event.getInviterUsername());
-
-        final var eventToPublish = getEventForAuthenticatedUserCreation(response, username);
+        val response = userAuthService.createAuthorizedUser(username, event.getInviterUsername());
+        val eventToPublish = getEventForAuthenticatedUserCreation(response, username);
 
         eventPublisher.withCorrelationId(event.getCorrelationId()).publish(eventToPublish);
     }
@@ -68,16 +68,16 @@ public class UserEventService {
     @EventListener
     public void onAuthenticatedUserCreated(final AuthenticatedUserCreated event) {
         logEvent(event);
-        final var result = new TemporaryUserCreatedResult(event.getUsername(), event.getPassword());
-        final Response response = Response.success(result);
+        val result = new TemporaryUserCreatedResult(event.getUsername(), event.getPassword());
+        val response = Response.success(result);
         userService.completeFutureCorrelation(event.getCorrelationId(), response);
     }
 
     @EventListener
     public void onAuthenticatedUserCreationFailed(final AuthenticatedUserCreationFailed event) {
         logEvent(event);
-        deleteTemporaryUser(event.getUsername());
-        final Response response = Response.failure(event.getErrorMessage());
+        temporaryUserRepository.deleteByUsername(event.getUsername());
+        val response = Response.failure(event.getErrorMessage());
         userService.completeFutureCorrelation(event.getCorrelationId(), response);
     }
 

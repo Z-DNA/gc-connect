@@ -12,13 +12,19 @@ okta:
     api-url: https://gc-connect.eu.auth0.com/api/v2/
     connection: Username-Password-Authentication
 
-spring.security.oauth2:
-  resourceserver:
-    jwt.issuer-uri: https://gc-connect.eu.auth0.com/
+spring:
+  data:
+    mongodb:
+      database: gc-connect
+      uri: mongodb+srv://${MONGO_USER}:${MONGO_PASSWD}@${MONGO_CLUSTER}.mongodb.net/?retryWrites=true&w=majority&appName=gc-connect
+
+
 
 logging:
   level:
     ROOT: INFO
     pl.zdna.gcconnect: DEBUG
-    org.springframework.boot:
-      spring-boot-autoconfigure: ERROR
+    org:
+      springframework:
+        boot:
+          spring-boot-autoconfigure: ERROR

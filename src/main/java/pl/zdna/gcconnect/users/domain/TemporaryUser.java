@@ -1,6 +1,5 @@
 package pl.zdna.gcconnect.users.domain;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -16,11 +15,18 @@ import pl.zdna.gcconnect.vgn.VGNType;
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = false)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 public final class TemporaryUser extends Entity {
     private String username;
     private String phoneNumber;
     private UserDetails details;
+
+    public void useDetailsFromActivatedUser(final User user) {
+        if (user.getUsername().equals(username)) {
+            this.details = user.getDetails();
+        }
+        // TODO GCC-44
+    }
 
     public static TemporaryUserBuilder with(final VGNFactory VGNFactory) {
         return new TemporaryUserBuilder(VGNFactory);
@@ -31,11 +37,16 @@ public final class TemporaryUser extends Entity {
         final VGNFactory VGNFactory;
 
         private User inviter;
-        private @Setter String username;
+        private String username;
         private @Setter String phoneNumber;
 
         private TemporaryUserBuilder(final VGNFactory VGNFactory) {
             this.VGNFactory = VGNFactory;
+        }
+
+        public TemporaryUserBuilder setUsername(String username) {
+            this.username = username.toLowerCase();
+            return this;
         }
 
         public TemporaryUserBuilder invitedBy(final User inviter) {
